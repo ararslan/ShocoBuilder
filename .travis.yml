@@ -1,22 +1,32 @@
 language: julia
 os:
-  - linux
+- linux
 julia:
-  - 0.6
+- 0.6
 notifications:
   email: false
 git:
   depth: 99999999
 cache:
   directories:
-    - downloads
+  - downloads
 env:
   global:
-    - BINARYBUILDER_DOWNLOADS_CACHE=downloads
-    - BINARYBUILDER_AUTOMATIC_APPLE=true
+  - BINARYBUILDER_DOWNLOADS_CACHE=downloads
+  - BINARYBUILDER_AUTOMATIC_APPLE=true
 sudo: required
 before_script:
-  - julia -e 'Pkg.clone("https://github.com/JuliaPackaging/BinaryProvider.jl")'
-  - julia -e 'Pkg.clone("https://github.com/JuliaPackaging/BinaryBuilder.jl"); Pkg.build()'
+- julia -e 'Pkg.clone("https://github.com/JuliaPackaging/BinaryProvider.jl")'
+- julia -e 'Pkg.clone("https://github.com/JuliaPackaging/BinaryBuilder.jl"); Pkg.build()'
 script:
-  - julia build_tarballs.jl
+- julia build_tarballs.jl
+deploy:
+  provider: releases
+  api_key:
+    secure: qmVHAroeSxeMuJzF1S91mm+g2R0ZAkL7YiA/yhsHiYLsTdZrEs4Xga3libnCBNM2/fh3w/cKn1wWH0BuiYOOHs76zmxx5YDLKqlbTNVypjN1OdZLz8Od7sS/pFugdJZFslpHSvpvZ6wAk7xVbReQ2pqlZWIVURPOn5h+5ROu8PKMaotl48pNJTHYphaEhr+SBBEIhODzVfk439olOuWAlWHSGkWRetYfbsD2b+qllcCiUsU57KxNhsSaDxubCMBDMsIiA22KBtBG4HxGf5W9Xs1B6wCM2F+loNQVqgQRMRM2XnE8TIwR9dvzp6TdM4xcCRZFFZy8KgcZpyM/i8DUvWEPkGtowRQDwRqTSJvqVwCLeGDFe5OYr2V8fbTexDavKybiH4DCWwLqpfVMB5+JNjAO/LyV/kbQiw6kZoI23gUdnP7DVm+lIYAXwUfHw2xAlY25fpt5QepUWVd9u8oFbG9yzjLOD59i2buLvW+22lRBDgcoQ3BwDVh55pT4S2or9dZ50zOoGuPf2aJJqJoWVp4/rodBWUU/iDxoMUORwt/o0Zwa812WMNfZHGVSteG1XhDg/TNd1nWTrSlJ+TFM99JguvIZDG/fDkTM43JFa0XnTbYJ0wFQlNcE7Fz+mhkKM99PBPilZT3oi/0uoGHvlwXtGPbmIBd4D4WVe6rCsqk=
+  file_glob: true
+  file: products/*
+  skip_cleanup: true
+  on:
+    repo: ararslan/ShocoBuilder
+    tags: true
