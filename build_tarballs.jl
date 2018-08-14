@@ -22,7 +22,10 @@ script = raw"""
         flag=-shared
     fi
     ${CC} shoco.c -o libshoco.${dlext} -fPIC -std=c99 ${flag}
-    cp libshoco.* ${prefix}
+    if [ ! -d ${prefix}/lib ]; then
+        mkdir -p ${prefix}/lib
+    fi
+    cp libshoco.* ${prefix}/lib
     """
 
 # These are the platforms we will build for by default, unless further
